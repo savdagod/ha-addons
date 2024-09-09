@@ -1,0 +1,10 @@
+- id: tidbyt-display
+  execute-command: "/opt/TidbytDisplay.sh"
+  command-working-directory: "/opt"
+  pass-arguments-to-command:
+    - source: "payload"
+      name: "content"
+    - source: "payload"
+      name: "deviceid"
+    - source: "payload"
+      name: "token"

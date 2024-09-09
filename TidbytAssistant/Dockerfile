@@ -1,0 +1,31 @@
+ARG BUILD_FROM
+
+FROM $BUILD_FROM
+
+# Args from HA add-on
+ARG BUILD_ARCH
+
+# Args from build.yaml
+ARG PIXLET_VERSION
+ARG GO_VERSION
+
+# Copy data for add-on
+COPY TidbytDisplay.sh /opt
+COPY hooks.yaml /
+ADD display /opt/display
+
+# Download pixlet binary and add to PATH
+RUN wget "https://github.com/tidbyt/pixlet/releases/download/v${PIXLET_VERSION}/pixlet_${PIXLET_VERSION}_linux_${BUILD_ARCH}.tar.gz"
+RUN tar -xvf pixlet_${PIXLET_VERSION}_linux_${BUILD_ARCH}.tar.gz -C /usr/local/bin
+RUN chmod +x /usr/local/bin/pixlet
+
+# Download Go and add to PATH
+RUN wget "https://go.dev/dl/go${GO_VERSION}.linux-${BUILD_ARCH}.tar.gz"
+RUN tar -xzf go${GO_VERSION}.linux-${BUILD_ARCH}.tar.gz -C /usr/local
+ENV PATH=${PATH}:/usr/local/go/bin
+
+# Build Webhook binary using Go and move to PATH
+RUN go install github.com/adnanh/webhook@latest
+RUN mv /root/go/bin/webhook /usr/local/bin/webhook
+
+CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
