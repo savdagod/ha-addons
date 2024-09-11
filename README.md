@@ -9,7 +9,7 @@ https://github.com/savdagod/ha-addons
 
 ### TidbytAssistant
 
-A docker container that hosts the pixlet app as well as webhook to receive API request to display information on your Tidbyt. After installing this add-on, install the TidbytAssistant integration found here"
+A docker container that hosts the pixlet app as well as webhook to receive API request to display information on your Tidbyt. After installing this add-on, install the TidbytAssistant integration found here:
 
 ```txt
 https://github.com/savdagod/TidbytAssistant/
