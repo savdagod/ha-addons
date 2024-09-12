@@ -11,9 +11,9 @@ ARG GO_VERSION
 
 # Copy data for add-on
 COPY TidbytDisplay.sh /opt
-RUN chmod a+x /opt/TidbytDisplay.sh
 COPY hooks.yaml /
 ADD display /opt/display
+RUN mkdir /config
 
 # Download pixlet binary and add to PATH
 RUN wget "https://github.com/tidbyt/pixlet/releases/download/v${PIXLET_VERSION}/pixlet_${PIXLET_VERSION}_linux_${BUILD_ARCH}.tar.gz"
@@ -28,5 +28,8 @@ ENV PATH=${PATH}:/usr/local/go/bin
 # Build Webhook binary using Go and move to PATH
 RUN go install github.com/adnanh/webhook@latest
 RUN mv /root/go/bin/webhook /usr/local/bin/webhook
+
+# Install perl
+RUN apk add --no-cache perl
 
 CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]

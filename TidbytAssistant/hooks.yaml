@@ -8,3 +8,5 @@
       name: "deviceid"
     - source: "payload"
       name: "token"
+    - source: "payload"
+      name: "contenttype"
