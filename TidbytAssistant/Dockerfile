@@ -12,6 +12,8 @@ ARG GO_VERSION
 # Copy data for add-on
 COPY TidbytDisplay.sh /opt
 RUN chmod a+x /opt/TidbytDisplay.sh
+COPY TidbytPublish.sh /opt
+RUN chmod a+x /opt/TidbytPublish.sh
 COPY hooks.yaml /
 ADD display /opt/display
 
