@@ -14,7 +14,6 @@ COPY TidbytDisplay.sh /opt
 RUN chmod a+x /opt/TidbytDisplay.sh
 COPY hooks.yaml /
 ADD display /opt/display
-RUN mkdir /config
 
 # Download pixlet binary and add to PATH
 RUN wget "https://github.com/tidbyt/pixlet/releases/download/v${PIXLET_VERSION}/pixlet_${PIXLET_VERSION}_linux_${BUILD_ARCH}.tar.gz"
