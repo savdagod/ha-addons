@@ -1,5 +1,5 @@
-- id: tidbyt-display
-  execute-command: "/opt/TidbytDisplay.sh"
+- id: tidbyt-push
+  execute-command: "/opt/TidbytPush.sh"
   command-working-directory: "/opt"
   pass-arguments-to-command:
     - source: "payload"
@@ -22,3 +22,17 @@
       name: "token"
     - source: "payload"
       name: "contentid"
+- id: tidbyt-text
+  execute-command: "/opt/TidbytText.sh"
+  command-working-directory: "/opt"
+  pass-arguments-to-command:
+    - source: "payload"
+      name: "content"
+    - source: "payload"
+      name: "deviceid"
+    - source: "payload"
+      name: "token"
+    - source: "payload"
+      name: "texttype"
+    - source: "payload"
+      name: "font"

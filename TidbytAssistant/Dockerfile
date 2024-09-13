@@ -10,14 +10,18 @@ ARG PIXLET_VERSION
 ARG GO_VERSION
 
 # Copy data for add-on
-COPY TidbytDisplay.sh /opt
-RUN chmod a+x /opt/TidbytDisplay.sh
+COPY TidbytPush.sh /opt
+RUN chmod a+x /opt/TidbytPush.sh
 COPY TidbytPublish.sh /opt
 RUN chmod a+x /opt/TidbytPublish.sh
+COPY TidbytText.sh /opt
+RUN chmod a+x /opt/TidbytText.sh
 COPY hooks.yaml /
 ADD display /opt/display
 
 # Download pixlet binary and add to PATH
+RUN echo "Pixlet version: ${PIXLET_VERSION}"
+RUN echo "Target Arch: ${BUILD_ARCH}"
 RUN wget "https://github.com/tidbyt/pixlet/releases/download/v${PIXLET_VERSION}/pixlet_${PIXLET_VERSION}_linux_${BUILD_ARCH}.tar.gz"
 RUN tar -xvf pixlet_${PIXLET_VERSION}_linux_${BUILD_ARCH}.tar.gz -C /usr/local/bin
 RUN chmod +x /usr/local/bin/pixlet
