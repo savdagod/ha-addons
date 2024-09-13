@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2
+- Potential fix zto Dockerfile for those building on arm64 architecture.
+
 ## 1.0.1
 - Added 2 new services: Publish and Text
     - Publish: Add apps to your rotation of apps
