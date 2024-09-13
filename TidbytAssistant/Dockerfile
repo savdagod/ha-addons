@@ -16,6 +16,8 @@ COPY TidbytPublish.sh /opt
 RUN chmod a+x /opt/TidbytPublish.sh
 COPY TidbytText.sh /opt
 RUN chmod a+x /opt/TidbytText.sh
+COPY TidbytDelete.sh /opt
+RUN chmod a+x /opt/TidbytDelete.sh
 COPY hooks.yaml /
 ADD display /opt/display
 

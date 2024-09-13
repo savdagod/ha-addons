@@ -1,7 +1,9 @@
 # Changelog
 
 ## 1.0.2
-- Potential fix to Dockerfile for those building on arm64 architecture.
+- Fix to Dockerfile for those building on arm64 architecture.
+- Added new service TidbytAssistant: Delete, which allows you to delete apps using their content IDs.
+- Be sure to download the most up to date TidbytAssistant integration.
 
 ## 1.0.1
 - Added 2 new services: Publish and Text

@@ -38,3 +38,13 @@
       name: "font"
     - source: "payload"
       name: "color"
+- id: tidbyt-delete
+  execute-command: "/opt/TidbytDelete.sh"
+  command-working-directory: "/opt"
+  pass-arguments-to-command:
+    - source: "payload"
+      name: "contentid"
+    - source: "payload"
+      name: "deviceid"
+    - source: "payload"
+      name: "token"
