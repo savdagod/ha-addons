@@ -14,6 +14,7 @@ def main(config):
                         child=render.Text(
                             content="%DISPLAY_TEXT%",
                             font="%DISPLAY_FONT%",
+                            color="%DISPLAY_COLOR%",
                         ),
                     ),
                 ],

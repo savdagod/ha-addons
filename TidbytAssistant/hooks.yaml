@@ -36,3 +36,5 @@
       name: "texttype"
     - source: "payload"
       name: "font"
+    - source: "payload"
+      name: "color"
