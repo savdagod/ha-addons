@@ -44,9 +44,9 @@ RUN apk update && \
     apk upgrade -U && \
     apk add --no-cache perl libwebp-dev git nodejs npm make
 
-RUN git clone https://github.com/tidbyt/pixlet
+RUN git clone https://github.com/tidbyt/pixlet.git
 WORKDIR pixlet
-RUN go get ./.. && \
+RUN go get ./... && \
     go build
 RUN mv pixlet /usr/local/bin
 
