@@ -15,8 +15,8 @@ esac
 
 RENDER_PATH=/tmp/render.webp
 
-pixlet render $ROOT_DIR/$CONTENT.star -o $RENDER_PATH
+/usr/local/bin/pixlet render $ROOT_DIR/$CONTENT.star -o $RENDER_PATH
 
-pixlet push --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
+/usr/local/bin/pixlet push --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
 
 exit 0

@@ -16,6 +16,6 @@ perl -pi -e "s/%DISPLAY_COLOR%/$COLOR/g" $ROOT_DIR/$FILE.star
 
 RENDER_PATH=/tmp/render.webp
 
-pixlet render $ROOT_DIR/$FILE.star -o $RENDER_PATH
+/usr/local/bin/pixlet render $ROOT_DIR/$FILE.star -o $RENDER_PATH
 
-pixlet push --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
+/usr/local/bin/pixlet push --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH

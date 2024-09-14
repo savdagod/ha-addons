@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.3
+- Added full path for pixlet app to potentially fix script not finding pixlet app.
+
 ## 1.0.2
 - Fix to Dockerfile for those building on arm64 architecture.
 - Added new service TidbytAssistant: Delete, which allows you to delete apps using their content IDs.

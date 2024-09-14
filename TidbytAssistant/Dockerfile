@@ -26,7 +26,7 @@ RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
     wget "https://github.com/tidbyt/pixlet/releases/download/v${PIXLET_VERSION}/pixlet_${PIXLET_VERSION}_linux_${arch}.tar.gz"
 RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
     tar -xvf pixlet_${PIXLET_VERSION}_linux_${arch}.tar.gz -C /usr/local/bin
-RUN chmod +x /usr/local/bin/pixlet
+RUN chmod a+x /usr/local/bin/pixlet
 
 # Download Go and add to PATH
 RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
