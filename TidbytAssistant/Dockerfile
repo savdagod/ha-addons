@@ -42,7 +42,7 @@ RUN mv /root/go/bin/webhook /usr/local/bin/webhook
 # Install perl
 RUN apk update && \
     apk upgrade -U && \
-    apk add --no-cache perl libwebp git nodejs npm make
+    apk add --no-cache perl libwebp-dev git nodejs npm make
 
 RUN git clone https://github.com/tidbyt/pixlet
 WORKDIR pixlet
