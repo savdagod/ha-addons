@@ -46,9 +46,8 @@ RUN apk update && \
 
 RUN git clone https://github.com/tidbyt/pixlet
 WORKDIR pixlet
-RUN npm install && \
-    npm run build
-RUN make build
-RUN mv /pixlet /usr/local/bin
+RUN go get ./.. && \
+    go build
+RUN mv pixlet /usr/local/bin
 
 CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
