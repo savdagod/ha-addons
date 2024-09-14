@@ -2,7 +2,6 @@
 
 ## 1.0.4
 - Added libwep to image.
-- Updated pixlet version to latest.
 
 ## 1.0.3
 - Added full path for pixlet app to potentially fix script not finding pixlet app.
