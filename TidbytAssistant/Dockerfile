@@ -42,6 +42,6 @@ RUN mv /root/go/bin/webhook /usr/local/bin/webhook
 # Install perl
 RUN apk update && \
     apk upgrade -U && \
-    add --no-cache perl libwep
+    apk add --no-cache perl libwep
 
 CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
