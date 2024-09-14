@@ -45,10 +45,10 @@ RUN apk update && \
     apk add --no-cache perl libwebp git nodejs npm
 
 RUN git clone https://github.com/tidbyt/pixlet
-RUN cd pixlet && \
-    npm install && \
+WORKDIR cd pixlet
+RUN npm install && \
     npm run build && \
     make build
-RUN mv pixlet /usr/local/bin
+RUN mv /pixlet /usr/local/bin
 
 CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
