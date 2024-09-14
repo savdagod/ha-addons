@@ -40,6 +40,8 @@ RUN go install github.com/adnanh/webhook@latest
 RUN mv /root/go/bin/webhook /usr/local/bin/webhook
 
 # Install perl
-RUN apk add --no-cache perl
+RUN apk update && \
+    apk upgrade -U && \
+    add --no-cache perl libwep
 
 CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
