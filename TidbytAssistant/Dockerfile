@@ -45,7 +45,7 @@ RUN apk update && \
     apk add --no-cache perl libwebp git nodejs npm
 
 RUN git clone https://github.com/tidbyt/pixlet
-WORKDIR cd pixlet
+WORKDIR pixlet
 RUN npm install && \
     npm run build && \
     make build
