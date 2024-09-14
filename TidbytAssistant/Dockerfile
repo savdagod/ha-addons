@@ -22,11 +22,11 @@ COPY hooks.yaml /
 ADD display /opt/display
 
 # Download pixlet binary and add to PATH
-RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
-    wget "https://github.com/tidbyt/pixlet/releases/download/v${PIXLET_VERSION}/pixlet_${PIXLET_VERSION}_linux_${arch}.tar.gz"
-RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
-    tar -xvf pixlet_${PIXLET_VERSION}_linux_${arch}.tar.gz -C /usr/local/bin
-RUN chmod a+x /usr/local/bin/pixlet
+# RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
+#    wget "https://github.com/tidbyt/pixlet/releases/download/v${PIXLET_VERSION}/pixlet_${PIXLET_VERSION}_linux_${arch}.tar.gz"
+# RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
+#    tar -xvf pixlet_${PIXLET_VERSION}_linux_${arch}.tar.gz -C /usr/local/bin
+# RUN chmod a+x /usr/local/bin/pixlet
 
 # Download Go and add to PATH
 RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
@@ -42,6 +42,13 @@ RUN mv /root/go/bin/webhook /usr/local/bin/webhook
 # Install perl
 RUN apk update && \
     apk upgrade -U && \
-    apk add --no-cache perl libwebp
+    apk add --no-cache perl libwebp git nodejs npm
+
+RUN git clone https://github.com/tidbyt/pixlet
+RUN cd pixlet
+RUN npm install && \
+    npm run build && \
+    make build
+RUN mv pixlet /usr/local/bin
 
 CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
