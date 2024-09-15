@@ -8,9 +8,9 @@ FONT=${5:?"missing arg 5 for FONT"}
 COLOR=${6:?"missing arg 6 for COLOR"}
 
 ROOT_DIR=/tmp
-TEXT_FILE=text-$TEXT_TYPE
-FILE=render
-cp /opt/display/$TEXT_FILE.star $ROOT_DIR/$FILE.star -f
+FILE=text-$TEXT_TYPE
+
+cp /opt/display/$FILE.star $ROOT_DIR/$FILE.star -f
 perl -pi -e "s/%DISPLAY_TEXT%/$CONTENT/g" $ROOT_DIR/$FILE.star
 perl -pi -e "s/%DISPLAY_FONT%/$FONT/g" $ROOT_DIR/$FILE.star
 perl -pi -e "s/%DISPLAY_COLOR%/$COLOR/g" $ROOT_DIR/$FILE.star
@@ -20,3 +20,6 @@ RENDER_PATH=/tmp/render.webp
 /usr/local/bin/pixlet render $ROOT_DIR/$FILE.star -o $RENDER_PATH
 
 /usr/local/bin/pixlet push --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
+rm -r /tmp/*
+
+exit 0
