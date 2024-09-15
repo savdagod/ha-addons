@@ -1,6 +1,7 @@
 # Changelog
 ### 1.0.5
 - Change Dockerfile to build pixlet binary.
+- Edit scripts to move .star files to tmp directory to work around current bug in pixlet.
 
 ## 1.0.4
 - Added libwep to image.
