@@ -8,8 +8,9 @@ FONT=${5:?"missing arg 5 for FONT"}
 COLOR=${6:?"missing arg 6 for COLOR"}
 
 ROOT_DIR=/tmp
-FILE=text-$TEXT_TYPE
-cp /opt/display/$FILE.star $ROOT_DIR/$FILE.star -f
+TEXT_FILE=text-$TEXT_TYPE
+FILE=render
+cp /opt/display/$TEXT_FILE.star $ROOT_DIR/$FILE.star -f
 perl -pi -e "s/%DISPLAY_TEXT%/$CONTENT/g" $ROOT_DIR/$FILE.star
 perl -pi -e "s/%DISPLAY_FONT%/$FONT/g" $ROOT_DIR/$FILE.star
 perl -pi -e "s/%DISPLAY_COLOR%/$COLOR/g" $ROOT_DIR/$FILE.star
