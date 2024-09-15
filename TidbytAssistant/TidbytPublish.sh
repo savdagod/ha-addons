@@ -9,7 +9,8 @@ CONTENT_ID=${4:?"missing arg 4 for CONTENT_ID"}
 ROOT_DIR=/homeassistant/tidbyt
 RENDER_PATH=/tmp/render.webp
 
-/usr/local/bin/pixlet render $ROOT_DIR/$CONTENT.star -o $RENDER_PATH
+cp $ROOT_DIR/$CONTENT.star /tmp/render.star -r
+/usr/local/bin/pixlet render /tmp/render.star -o $RENDER_PATH
 
 /usr/local/bin/pixlet push --installation-id $CONTENT_ID --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
 
