@@ -48,7 +48,7 @@ RUN apk update && \
     apk add curl wget git make libc-dev gcc ca-certificates npm libwebp-dev libwebp-tools patchelf gcompat && \
     rm -rf /var/cache/*
 # RUN wget "https://go.dev/dl/$(curl 'https://go.dev/VERSION?m=text').linux-amd64.tar.gz" && tar -C /usr/local -xzf go*.linux-amd64.tar.gz && rm -f go*.linux-amd64.tar.gz
-RUN patchelf --set-interpreter /lib/libc.musl-x86_64.so.1 /usr/local/go/bin/go
+# RUN patchelf --set-interpreter /lib/libc.musl-x86_64.so.1 /usr/local/go/bin/go
 
 #Download Pixlet
 RUN git clone https://github.com/tidbyt/pixlet.git $REPO 
