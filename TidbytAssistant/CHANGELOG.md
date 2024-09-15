@@ -1,4 +1,6 @@
 # Changelog
+### 1.0.5
+- Change Dockerfile to build pixlet binary.
 
 ## 1.0.4
 - Added libwep to image.
