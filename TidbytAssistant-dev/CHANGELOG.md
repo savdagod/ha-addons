@@ -1,4 +1,8 @@
 # Changelog
+
+### 1.0.6-dev
+- Created dev version of add-on.
+
 ### 1.0.5
 - Change Dockerfile to build pixlet binary.
 - Edit scripts to move .star files to tmp directory to work around current bug in pixlet.
