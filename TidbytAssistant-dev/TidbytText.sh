@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 CONTENT=${1:?"missing arg 1 for CONTENT"} 
 TB_DEVICEID=${2:?"missing arg 2 for DEVICE ID"}
