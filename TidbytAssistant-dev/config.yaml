@@ -1,7 +1,7 @@
-name: "TidbytAssistant"
-description: "Add-on with Pixlet application. Allows you to push custom apps to your Tidbyt"
+name: "TidbytAssistant-dev"
+description: "Add-on with Pixlet application. Allows you to push custom apps to your Tidbyt. This is the dev version of the app so some features may not work."
 version: "1.0.5"
-slug: "tidbytassistant"
+slug: "tidbytassistant-dev"
 init: False
 arch:
   - aarch64
