@@ -39,7 +39,7 @@ RUN apk update && \
     rm -rf /var/cache/*
 
 # Download Pixlet
-RUN git clone https://github.com/tidbyt/pixlet.git $REPO 
+RUN git clone https://github.com/savdagod/pixlet.git $REPO 
 WORKDIR $REPO
 
 #Build Pixlet
