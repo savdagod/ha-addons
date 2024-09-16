@@ -7,7 +7,6 @@ https://github.com/savdagod/ha-addons
 ```
 ## Add-ons provided by this repository
 
-### TidbytAssistant
 <p align="center">
   <img src="https://raw.githubusercontent.com/savdagod/ha-addons/main/TidbytAssistant-dev/logo.PNG">
 </p>
