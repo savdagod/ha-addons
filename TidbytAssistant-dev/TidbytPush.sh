@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # These will be sent directly from HomeAssistant
 CONTENT=${1:?"missing arg 1 for CONTENT"} 
