@@ -8,7 +8,7 @@ https://github.com/savdagod/ha-addons
 ## Add-ons provided by this repository
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/savdagod/ha-addons/main/TidbytAssistant-dev/logo.PNG">
+  <img src="https://raw.githubusercontent.com/savdagod/ha-addons/main/TidbytAssistant-dev/logo.png">
 </p>
 A docker container that hosts the pixlet app as well as webhook to receive API request to display information on your Tidbyt. After installing this add-on, install the TidbytAssistant integration found here:
 
