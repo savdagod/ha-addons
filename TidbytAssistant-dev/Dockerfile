@@ -54,4 +54,5 @@ RUN apk del -r curl wget git make gcc patchelf libc-dev
 RUN rm -r $GOPATH
 RUN rm -r /root/go
 
-CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
+# CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
+CMD ["/start.sh"]
