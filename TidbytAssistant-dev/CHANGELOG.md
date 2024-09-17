@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7-dev
+- Point pixlet build to forked repo to keep Pixlet version consistent.
+- Add error handling to scripts, webhook responds with error which will be logged in HomeAssistant.
+  
 ## 1.0.6-dev
 - Created dev version of add-on.
 
