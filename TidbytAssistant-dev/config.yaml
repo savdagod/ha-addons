@@ -1,6 +1,6 @@
 name: "TidbytAssistant-dev"
 description: "Add-on with Pixlet application. Allows you to push custom apps to your Tidbyt. This is the dev version of the app so some features may not work"
-version: "1.0.6-dev"
+version: "1.0.7-dev"
 slug: "tidbytassistant-dev"
 url: "https://github.com/savdagod/ha-addons/tree/main/TidbytAssistant-dev"
 init: False
