@@ -6,6 +6,7 @@ FROM $BUILD_FROM
 ARG GO_VERSION
 
 # Copy data for add-on
+COPY start.sh /
 COPY TidbytPush.sh /opt
 RUN chmod a+x /opt/TidbytPush.sh
 COPY TidbytPublish.sh /opt
