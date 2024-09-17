@@ -46,10 +46,12 @@ WORKDIR $REPO
 RUN npm install && npm run build
 RUN make build
 
-# Clean up build prereqs
-RUN apk del -r curl wget git make gcc patchelf libc-dev 
-
 # Move pixlet binary to path
 RUN mv $GOPATH/pixlet/pixlet /usr/local/bin/pixlet
+
+# Clean up build prereqs
+RUN apk del -r curl wget git make gcc patchelf libc-dev 
+RUN rm -r $GOPATH
+RUN rm -r /root/go
 
 CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
