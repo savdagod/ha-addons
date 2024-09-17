@@ -6,8 +6,6 @@ FROM $BUILD_FROM
 ARG GO_VERSION
 
 # Copy data for add-on
-COPY start.sh / 
-RUN chmod a+x /start.sh
 COPY TidbytPush.sh /opt
 RUN chmod a+x /opt/TidbytPush.sh
 COPY TidbytPublish.sh /opt
@@ -56,5 +54,5 @@ RUN apk del -r curl wget git make gcc patchelf libc-dev
 RUN rm -r $GOPATH
 RUN rm -r /root/go
 
-# CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
-CMD ["/start.sh"]
+CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
+
