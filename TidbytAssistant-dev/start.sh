@@ -1,5 +1,5 @@
 #!/bin/sh
 
-echo pixlet version
+pixlet version
 
 webhook -hooks /hooks.yaml -verbose
