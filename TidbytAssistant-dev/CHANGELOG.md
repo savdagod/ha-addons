@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.8-dev
+- Use command line arguments for text scripts instead of replacing strings.
+  
 ## 1.0.7-dev
 - Point pixlet build to forked repo to keep Pixlet version consistent.
 - Add error handling to scripts, webhook responds with error which will be logged in HomeAssistant.
