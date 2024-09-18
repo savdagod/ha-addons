@@ -1,6 +1,9 @@
 load("render.star", "render")
 
 def main(config):
+        content = config.get(content)
+        font = config.get(font)
+        color = config.get(color)
 	return render.Root(          
 		child = render.Box(
             render.Row(
@@ -12,9 +15,9 @@ def main(config):
                         width=50,
                         offset_start=49,
                         child=render.Text(
-                            content="%DISPLAY_TEXT%",
-                            font="%DISPLAY_FONT%",
-                            color="%DISPLAY_COLOR%",
+                            content=$content,
+                            font=$font,
+                            color=$color,
                         ),
                     ),
                 ],
