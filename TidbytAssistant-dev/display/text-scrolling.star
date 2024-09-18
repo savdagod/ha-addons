@@ -15,9 +15,9 @@ def main(config):
                         width=50,
                         offset_start=49,
                         child=render.Text(
-                            content=$content,
-                            font=$font,
-                            color=$color,
+                            content=content,
+                            font=font,
+                            color=color,
                         ),
                     ),
                 ],
