@@ -6,8 +6,8 @@ def main(config):
         color = config.get(color)
 	return render.Root(          
         child=render.WrappedText(
-            content=$content,
-            font=$font,
-            color=$color,
+            content=content,
+            font=font,
+            color=color,
         ),
 	)
