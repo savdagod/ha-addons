@@ -18,7 +18,7 @@ cp /opt/display/$FILE.star $ROOT_DIR/$FILE.star -f
 
 RENDER_PATH=/tmp/render.webp
 
-/usr/local/bin/pixlet render $ROOT_DIR/$FILE.star content=$CONTENT font=$FONT color=$COLOR -o $RENDER_PATH
+/usr/local/bin/pixlet render $ROOT_DIR/$FILE.star content="$CONTENT" font="$FONT" color="$COLOR" -o $RENDER_PATH
 
 /usr/local/bin/pixlet push --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
 rm -r /tmp/*
