@@ -16,7 +16,7 @@ ARG GO_VERSION
 #RUN chmod a+x /opt/TidbytDelete.sh
 COPY hooks.yaml /
 ADD scripts /opt/scripts
-RUN chmod a+x -r /opt/scripts 
+RUN chmod a+x /opt/scripts/*
 ADD display /opt/display
 
 # Download Go and add to PATH
