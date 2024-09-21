@@ -20,7 +20,7 @@ RENDER_PATH=/tmp/render.webp
 
 if [[ "$TEXT_TYPE" == "title" ]]; then
 	/usr/local/bin/pixlet render $ROOT_DIR/$FILE.star content="$CONTENT" font="$FONT" color="$COLOR" title="$TITLE" titlecolor="$TITLE_COLOR" titlefont="$TITLE_FONT" -o $RENDER_PATH
-else;
+else
 	/usr/local/bin/pixlet render $ROOT_DIR/$FILE.star content="$CONTENT" font="$FONT" color="$COLOR" -o $RENDER_PATH
 fi 
 
