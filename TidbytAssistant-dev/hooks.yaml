@@ -44,6 +44,12 @@
       name: "font"
     - source: "payload"
       name: "color"
+    - source: "payload"
+      name: "title"
+    - source: "payload"
+      name: "titlecolor"
+    - source: "payload"
+      name: "titlefont"
 - id: tidbyt-delete
   execute-command: "/opt/scripts/TidbytDelete.sh"
   command-working-directory: "/opt"
