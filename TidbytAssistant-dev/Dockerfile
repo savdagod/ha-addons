@@ -28,7 +28,6 @@ ENV GOPATH /usr/local/go
 ENV REPO $GOPATH/pixlet
 RUN apk update && \
     apk upgrade -U && \
-    apk add --no-cache perl && \
     apk add curl wget git make libc-dev gcc ca-certificates npm libwebp-dev libwebp-tools patchelf gcompat && \
     rm -rf /var/cache/*
 
