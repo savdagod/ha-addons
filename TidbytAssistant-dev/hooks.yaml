@@ -1,5 +1,5 @@
 - id: tidbyt-push
-  execute-command: "/opt/TidbytPush.sh"
+  execute-command: "/opt/scripts/TidbytPush.sh"
   command-working-directory: "/opt"
   include-command-output-in-response: true
   include-command-output-in-response-on-error: true
@@ -13,7 +13,7 @@
     - source: "payload"
       name: "contenttype"
 - id: tidbyt-publish
-  execute-command: "/opt/TidbytPublish.sh"
+  execute-command: "/opt/scripts/TidbytPublish.sh"
   command-working-directory: "/opt"
   include-command-output-in-response: true
   include-command-output-in-response-on-error: true
@@ -27,7 +27,7 @@
     - source: "payload"
       name: "contentid"
 - id: tidbyt-text
-  execute-command: "/opt/TidbytText.sh"
+  execute-command: "/opt/scripts/TidbytText.sh"
   command-working-directory: "/opt"
   include-command-output-in-response: true
   include-command-output-in-response-on-error: true
@@ -45,7 +45,7 @@
     - source: "payload"
       name: "color"
 - id: tidbyt-delete
-  execute-command: "/opt/TidbytDelete.sh"
+  execute-command: "/opt/scripts/TidbytDelete.sh"
   command-working-directory: "/opt"
   include-command-output-in-response: true
   include-command-output-in-response-on-error: true
