@@ -2,7 +2,7 @@ load("render.star", "render")
 
 def main(config):
 	content = config.get("content")
-	title = config.get("title)
+	title = config.get("title")
 	font = config.get("font")
 	titlefont = config.get("titlefont")
 	color = config.get("color")
