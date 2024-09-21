@@ -11,6 +11,8 @@ TITLE=${7:-}
 TITLE_COLOR=${8:-}
 TITLE_FONT=${9:-}
 
+rm -r /tmp/*
+
 ROOT_DIR=/tmp
 FILE=text-$TEXT_TYPE
 
@@ -25,6 +27,5 @@ else
 fi 
 
 /usr/local/bin/pixlet push --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
-rm -r /tmp/*
 
 exit 0
