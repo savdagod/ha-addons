@@ -12,8 +12,8 @@
       name: "token"
     - source: "payload"
       name: "contenttype"
-    - soruce: "payload"
-      name: "keyval"
+    - source: "payload"
+      name: "starargs"
 - id: tidbyt-publish
   execute-command: "/opt/scripts/TidbytPublish.sh"
   command-working-directory: "/opt"
@@ -28,8 +28,8 @@
       name: "token"
     - source: "payload"
       name: "contentid"
-    - soruce: "payload"
-      name: "keyval"
+    - source: "payload"
+      name: "starsrgs"
 - id: tidbyt-text
   execute-command: "/opt/scripts/TidbytText.sh"
   command-working-directory: "/opt"
