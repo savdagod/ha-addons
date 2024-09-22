@@ -8,7 +8,7 @@ TB_TOKEN=${3:?"missing arg 3 for TOKEN"}
 CONTENT_ID=${4:?"missing arg 4 for CONTENT_ID"}
 
 
-rm -r /tmp/*
+rm -f /tmp/*
 
 ROOT_DIR=/homeassistant/tidbyt
 RENDER_PATH=/tmp/render.webp

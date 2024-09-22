@@ -7,7 +7,7 @@ TB_DEVICEID=${2:?"missing arg 2 for DEVICE ID"}
 TB_TOKEN=${3:?"missing arg 3 for TOKEN"}
 CONTENT_TYPE=${4:?"missing arg 4 for CONTENT_TYPE"}
 
-rm -r /tmp/*
+rm -f /tmp/*
 
 case "$CONTENT_TYPE" in
 	"builtin") 

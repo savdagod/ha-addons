@@ -2,7 +2,11 @@
 
 ## 1.0.8-dev
 - Use command line arguments for text scripts instead of replacing strings.
-  
+- Add Text & Title type for Text service.
+- Publish service now pushes to the background, preventing the current app from being replaced by the pushed app.
+- Scripts clear tmp folder before rather than after commands.
+- Moved scripts to their own folder.
+
 ## 1.0.7-dev
 - Point pixlet build to forked repo to keep Pixlet version consistent.
 - Add error handling to scripts, webhook responds with error which will be logged in HomeAssistant.

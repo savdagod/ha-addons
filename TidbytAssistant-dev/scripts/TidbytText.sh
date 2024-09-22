@@ -11,7 +11,7 @@ TITLE=${7:-}
 TITLE_COLOR=${8:-}
 TITLE_FONT=${9:-}
 
-rm -r /tmp/*
+rm -f /tmp/*
 
 ROOT_DIR=/tmp
 FILE=text-$TEXT_TYPE
