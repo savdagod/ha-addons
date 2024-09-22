@@ -1,12 +1,15 @@
 load("render.star", "render")
+default_title = "TITLE"
+default_font = "6x13"
+default_color = "#00f"
 
 def main(config):
 	content = config.get("content")
-	title = config.get("title")
 	font = config.get("font")
-	titlefont = config.get("titlefont")
 	color = config.get("color")
-	titlecolor = config.get("titlecolor")
+	title = config.get("title",default_title)
+	titlefont = config.get("titlefont",default_font)
+	titlecolor = config.get("titlecolor",default_color)
 	return render.Root(
 		child = render.Column(
 		expanded=True,
