@@ -13,7 +13,7 @@
     - source: "payload"
       name: "contenttype"
     - soruce: "payload"
-      name: "starargs"
+      name: "keyval"
 - id: tidbyt-publish
   execute-command: "/opt/scripts/TidbytPublish.sh"
   command-working-directory: "/opt"
@@ -29,7 +29,7 @@
     - source: "payload"
       name: "contentid"
     - soruce: "payload"
-      name: "starargs"
+      name: "keyval"
 - id: tidbyt-text
   execute-command: "/opt/scripts/TidbytText.sh"
   command-working-directory: "/opt"
