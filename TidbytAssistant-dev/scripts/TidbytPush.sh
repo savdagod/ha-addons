@@ -22,7 +22,7 @@ RENDER_PATH=/tmp/render.webp
 cp $ROOT_DIR/$CONTENT.star /tmp/$CONTENT.star -f
 if [[ $ARGS ]]; then
         read -a ARRAY <<< "$ARGS"
-	/usr/local/bin/pixlet render /tmp/$CONTENT.star "${ARRAY[*]}" -o $RENDER_PATH
+	/usr/local/bin/pixlet render /tmp/$CONTENT.star ${ARRAY[*]} -o $RENDER_PATH
 else
 	/usr/local/bin/pixlet render /tmp/$CONTENT.star -o $RENDER_PATH
 fi
