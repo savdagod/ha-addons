@@ -14,6 +14,7 @@ def main(config):
                     render.Marquee(
                         width=50,
                         offset_start=49,
+                        align="center",
                         child=render.Text(
                             content=content,
                             font=font,
