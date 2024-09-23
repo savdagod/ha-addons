@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 CONTENT=${1:?"missing arg 1 for CONTENT"} 
