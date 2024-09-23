@@ -29,7 +29,7 @@
     - source: "payload"
       name: "contentid"
     - source: "payload"
-      name: "starsrgs"
+      name: "starargs"
 - id: tidbyt-text
   execute-command: "/opt/scripts/TidbytText.sh"
   command-working-directory: "/opt"
