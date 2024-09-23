@@ -9,6 +9,7 @@
 - Moved scripts to their own folder.
 - Point pixlet build to forked repo to keep Pixlet version consistent.
 - Add error handling to scripts, webhook responds with error which will be logged in HomeAssistant.
+- **NOTE: Be sure to update the integration to v1.0.4 to take advantage of these new features!**
   
 ## 1.0.5
 - Change Dockerfile to build pixlet binary.
