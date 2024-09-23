@@ -28,5 +28,4 @@ fi
 
 /usr/local/bin/pixlet push --installation-id $CONTENT_ID --background --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
 
-
 exit 0
