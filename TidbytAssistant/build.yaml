@@ -1,3 +1,2 @@
 args:
-    PIXLET_VERSION: "0.28.6"
     GO_VERSION: "1.23.1"

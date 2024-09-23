@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+set -e
 
 # These will be sent directly from HomeAssistant
 CONTENT_ID=${1:?"missing arg 1 for CONTENT_ID"} 

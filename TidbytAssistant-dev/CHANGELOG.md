@@ -4,6 +4,7 @@
 - Use command line arguments for text scripts instead of replacing strings.
 - Add Text & Title type for Text service.
 - Publish service now pushes to the background, preventing the current app from being replaced by the pushed app.
+- Push and Publish service now support key=value pair arguments.
 - Scripts clear tmp folder before rather than after commands.
 - Moved scripts to their own folder.
 
