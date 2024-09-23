@@ -21,21 +21,13 @@ RENDER_PATH=/tmp/render.webp
 
 cp $ROOT_DIR/$CONTENT.star /tmp/$CONTENT.star -f
 if [[ $ARGS ]]; then
-        IFS=';' read -ra pairs <<< "$ARGS"
-	for pair in "${pairs[@]}"; do
-            # Split each pair by equals sign
-            IFS='=' read -r key value <<< "$pair"
-            # Assign to the associative array
-            array["$key"]="$value"
-        done
-
-        args=()
-        for key in "${!array[@]}"; do
-            args+=("$key=${array[$key]}")
-        done
-
-        echo "${args[@]}"
-	/usr/local/bin/pixlet render /tmp/$CONTENT.star "${args[@]}" -o $RENDER_PATH
+    arg=()
+    IFS=';' read -ra pairs <<< "$ARGS"
+    for pair in "${pairs[@]}"; do
+        IFS='=' read -r key value <<< "$pair"
+        arg+=("$key=\"$value\"")
+    done
+	/usr/local/bin/pixlet render /tmp/$CONTENT.star "${arg[@]}" -o $RENDER_PATH
 else
 	/usr/local/bin/pixlet render /tmp/$CONTENT.star -o $RENDER_PATH
 fi
