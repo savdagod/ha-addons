@@ -25,7 +25,7 @@ if [[ $ARGS ]]; then
     IFS=';' read -ra pairs <<< "$ARGS"
     for pair in "${pairs[@]}"; do
         IFS='=' read -r key value <<< "$pair"
-        arg+=("$key=\"$value\"")
+        arg+=("$key=$value")
     done
 	/usr/local/bin/pixlet render /tmp/$CONTENT.star "${arg[@]}" -o $RENDER_PATH
 else
