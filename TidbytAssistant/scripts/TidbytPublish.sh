@@ -6,7 +6,8 @@ CONTENT=${1:?"missing arg 1 for CONTENT"}
 TB_DEVICEID=${2:?"missing arg 2 for DEVICE ID"}
 TB_TOKEN=${3:?"missing arg 3 for TOKEN"}
 CONTENT_ID=${4:?"missing arg 4 for CONTENT_ID"}
-ARGS=${5:-}
+PUBLISH_TYPE=${5:?"missing arg 5 for PUBLISH_TYPE"}
+ARGS=${6:-}
 
 rm -f /tmp/*
 
@@ -26,6 +27,10 @@ else
 	/usr/local/bin/pixlet render /tmp/$CONTENT.star -o $RENDER_PATH
 fi
 
-/usr/local/bin/pixlet push --installation-id $CONTENT_ID --background --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
+if [[ $PUBLISH_TYPE == 'background' ]]; then
+    /usr/local/bin/pixlet push --installation-id $CONTENT_ID --background --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
+else
+    /usr/local/bin/pixlet push --installation-id $CONTENT_ID --api-token $TB_TOKEN $TB_DEVICEID $RENDER_PATH
+fi
 
 exit 0

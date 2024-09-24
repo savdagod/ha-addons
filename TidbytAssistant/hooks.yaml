@@ -29,6 +29,8 @@
     - source: "payload"
       name: "contentid"
     - source: "payload"
+      name: "publishtype"
+    - source: "payload"
       name: "starargs"
 - id: tidbyt-text
   execute-command: "/opt/scripts/TidbytText.sh"
