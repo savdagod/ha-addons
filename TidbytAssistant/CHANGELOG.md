@@ -2,7 +2,7 @@
 
 ## 1.0.7
 - Added option to publish from background or foreground.
--**NOTE: Be sure to update the integration to v1.0.5 to be able to use this feature!**
+- **NOTE: Be sure to update the integration to v1.0.5 to be able to use this feature!**
 
 ## 1.0.6
 - Use command line arguments for text scripts instead of replacing strings.
