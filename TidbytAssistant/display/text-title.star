@@ -1,6 +1,6 @@
 load("render.star", "render")
 default_title = "TITLE"
-default_font = "6x13"
+default_font = "6x10"
 default_color = "#00f"
 
 def main(config):
@@ -16,10 +16,12 @@ def main(config):
 		main_align="center",
 		cross_align="center",
 			children = [
-				render.Text(
-				content=title, 
-				font=titlefont,
-				color=titlecolor,
+				render.WrappedText(
+					content=title, 
+					font=titlefont,
+					color=titlecolor,
+					align="center",
+					linespacing=0,
 				),
 				render.Marquee(
 					width=60,
