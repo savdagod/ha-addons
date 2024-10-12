@@ -1,35 +1,51 @@
-ARG BUILD_FROM=homeassistant/amd64-base:latest
+ARG BUILD_FROM
 
-FROM ${BUILD_FROM} AS builder
+FROM $BUILD_FROM
 
 # Args from build.yaml
-ARG GO_VERSION=1.23.2
+ARG GO_VERSION
 
-SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+# Copy data for add-on
+COPY hooks.yaml /
+ADD scripts /opt/scripts
+RUN chmod a+x /opt/scripts/*
+ADD display /opt/display
 
 # Download Go and add to PATH
 RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
-    wget -q "https://go.dev/dl/go${GO_VERSION}.linux-${arch}.tar.gz"
+    wget "https://go.dev/dl/go${GO_VERSION}.linux-${arch}.tar.gz"
 RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
-    tar -xzf "go${GO_VERSION}.linux-${arch}.tar.gz" -C /usr/local && \
-    rm "go${GO_VERSION}.linux-${arch}.tar.gz"
-ENV PATH=/usr/local/go/bin:${PATH}
-ENV GOROOT=/usr/local/go
+    tar -xzf go${GO_VERSION}.linux-${arch}.tar.gz -C /usr/local && \
+    rm go${GO_VERSION}.linux-${arch}.tar.gz
+ENV PATH=${PATH}:/usr/local/go/bin
+
+# Build Webhook binary using Go and move to PATH
+RUN go install github.com/adnanh/webhook@latest
+RUN mv /root/go/bin/webhook /usr/local/bin/webhook
 
 # Download dependencies
-RUN apk --no-cache add libc-dev gcc ca-certificates libwebp-dev libwebp-static
+ENV GOPATH /usr/local/go
+ENV REPO $GOPATH/pixlet
+RUN apk update && \
+    apk upgrade -U && \
+    apk add curl wget git make libc-dev gcc ca-certificates npm libwebp-dev libwebp-tools patchelf gcompat && \
+    rm -rf /var/cache/*
 
-# Build binary
-COPY *.go go.mod go.sum /src/
-WORKDIR /src
-RUN CGO_ENABLED=1 go build -ldflags "-s -w -linkmode=external '-extldflags=-static -lsharpyuv'" -o /tidbyt-assistant ./...
+# Download Pixlet
+RUN git clone https://github.com/savdagod/pixlet.git $REPO 
+WORKDIR $REPO
 
-FROM scratch
+#Build Pixlet
+RUN npm install && npm run build
+RUN make build
 
-COPY --from=builder /tidbyt-assistant /tidbyt-assistant
-#COPY --from=builder /usr/lib/libwebp*.so* /usr/lib/libsharpyuv.so* /usr/lib/
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY display /display
+# Move pixlet binary to path
+RUN mv $GOPATH/pixlet/pixlet /usr/local/bin/pixlet
 
-ENTRYPOINT [ "/tidbyt-assistant" ]
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "/tidbyt-assistant", "-health", "http://localhost:9000/health" ]
+# Clean up build prereqs
+RUN apk del -r curl wget git make gcc patchelf libc-dev 
+RUN rm -r $GOPATH
+RUN rm -r /root/go
+
+CMD [ "webhook", "-hooks", "/hooks.yaml", "-verbose" ]
+
