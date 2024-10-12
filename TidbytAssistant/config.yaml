@@ -1,8 +1,8 @@
 name: "TidbytAssistant"
 description: "Add-on with Pixlet application. Allows you to push custom apps to your Tidbyt. Install with integration v1.0.5"
-version: "1.0.8"
+version: "1.0.7"
 slug: "tidbytassistant"
-url: "https://github.com/savdagod/ha-addons/tree/main/TidbytAssistant"
+url: "https://github.com/savdagod/ha-addons/tree/main/TidbytAssistant-dev"
 init: False
 arch:
   - aarch64

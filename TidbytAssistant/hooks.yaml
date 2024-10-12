@@ -1,0 +1,70 @@
+- id: tidbyt-push
+  execute-command: "/opt/scripts/TidbytPush.sh"
+  command-working-directory: "/opt"
+  include-command-output-in-response: true
+  include-command-output-in-response-on-error: true
+  pass-arguments-to-command:
+    - source: "payload"
+      name: "content"
+    - source: "payload"
+      name: "deviceid"
+    - source: "payload"
+      name: "token"
+    - source: "payload"
+      name: "contenttype"
+    - source: "payload"
+      name: "starargs"
+- id: tidbyt-publish
+  execute-command: "/opt/scripts/TidbytPublish.sh"
+  command-working-directory: "/opt"
+  include-command-output-in-response: true
+  include-command-output-in-response-on-error: true
+  pass-arguments-to-command:
+    - source: "payload"
+      name: "content"
+    - source: "payload"
+      name: "deviceid"
+    - source: "payload"
+      name: "token"
+    - source: "payload"
+      name: "contentid"
+    - source: "payload"
+      name: "publishtype"
+    - source: "payload"
+      name: "starargs"
+- id: tidbyt-text
+  execute-command: "/opt/scripts/TidbytText.sh"
+  command-working-directory: "/opt"
+  include-command-output-in-response: true
+  include-command-output-in-response-on-error: true
+  pass-arguments-to-command:
+    - source: "payload"
+      name: "content"
+    - source: "payload"
+      name: "deviceid"
+    - source: "payload"
+      name: "token"
+    - source: "payload"
+      name: "texttype"
+    - source: "payload"
+      name: "font"
+    - source: "payload"
+      name: "color"
+    - source: "payload"
+      name: "title"
+    - source: "payload"
+      name: "titlecolor"
+    - source: "payload"
+      name: "titlefont"
+- id: tidbyt-delete
+  execute-command: "/opt/scripts/TidbytDelete.sh"
+  command-working-directory: "/opt"
+  include-command-output-in-response: true
+  include-command-output-in-response-on-error: true
+  pass-arguments-to-command:
+    - source: "payload"
+      name: "contentid"
+    - source: "payload"
+      name: "deviceid"
+    - source: "payload"
+      name: "token"
