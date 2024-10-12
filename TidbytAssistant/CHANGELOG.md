@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.8
+- Reduced size of the addon by running a distroless container with a static Go server.
+
 ## 1.0.7
 - Added option to publish from background or foreground.
 - **NOTE: Be sure to update the integration to v1.0.5 to be able to use this feature!**
