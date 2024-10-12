@@ -13,7 +13,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"tidbyt.dev/pixlet/encode"
@@ -35,20 +34,20 @@ const (
 
 type (
 	pushRequest struct {
-		Content     string   `json:"content"`
-		DeviceID    string   `json:"deviceid"`
-		Token       string   `json:"token"`
-		ContentType string   `json:"contenttype"`
-		Arguments   []string `json:"starargs"`
+		Content     string            `json:"content"`
+		DeviceID    string            `json:"deviceid"`
+		Token       string            `json:"token"`
+		ContentType string            `json:"contenttype"`
+		Arguments   map[string]string `json:"starargs"`
 	}
 
 	publishRequest struct {
-		Content        string   `json:"content"`
-		DeviceID       string   `json:"deviceid"`
-		Token          string   `json:"token"`
-		InstallationID string   `json:"contentid"`
-		PublishType    string   `json:"publishtype"`
-		Arguments      []string `json:"starargs"`
+		Content        string            `json:"content"`
+		DeviceID       string            `json:"deviceid"`
+		Token          string            `json:"token"`
+		InstallationID string            `json:"contentid"`
+		PublishType    string            `json:"publishtype"`
+		Arguments      map[string]string `json:"starargs"`
 	}
 
 	textRequest struct {
@@ -96,14 +95,8 @@ func pushHandler(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, fmt.Sprintf("unknown content type %q", r.ContentType), http.StatusBadRequest)
 	}
 
-	config, err := parseArguments(r.Arguments)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
 	path := filepath.Join(rootDir, r.Content+".star")
-	if err := renderAndPush(path, config, r.DeviceID, "", r.Token, false); err != nil {
+	if err := renderAndPush(path, r.Arguments, r.DeviceID, "", r.Token, false); err != nil {
 		slog.Error(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -120,16 +113,10 @@ func publishHandler(w http.ResponseWriter, req *http.Request) {
 
 	slog.Debug(fmt.Sprintf("Received publish request %+v", r))
 
-	config, err := parseArguments(r.Arguments)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
 	path := filepath.Join("/homeassistant/tidbyt", r.Content+".star")
 	background := r.PublishType == "background"
 
-	if err := renderAndPush(path, config, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
+	if err := renderAndPush(path, r.Arguments, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
 		slog.Error(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -249,19 +236,6 @@ func tidbytAPI(u, method string, payload []byte, apiToken string) error {
 	}
 
 	return nil
-}
-
-func parseArguments(args []string) (map[string]string, error) {
-	config := map[string]string{}
-	for _, param := range args {
-		split := strings.Split(param, "=")
-		if len(split) < 2 {
-			return nil, fmt.Errorf("parameters must be in form <key>=<value>, found %s", param)
-		}
-		config[split[0]] = strings.Join(split[1:], "=")
-	}
-
-	return config, nil
 }
 
 func renderApp(path string, config map[string]string) ([]byte, error) {
