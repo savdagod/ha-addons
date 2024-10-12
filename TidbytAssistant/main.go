@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"tidbyt.dev/pixlet/encode"
@@ -95,6 +96,11 @@ func pushHandler(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, fmt.Sprintf("unknown content type %q", r.ContentType), http.StatusBadRequest)
 	}
 
+	if !validatePath(r.Content) {
+		http.Error(w, "Invalid file name", http.StatusBadRequest)
+		return
+	}
+
 	path := filepath.Join(rootDir, r.Content+".star")
 	if err := renderAndPush(path, r.Arguments, r.DeviceID, "", r.Token, false); err != nil {
 		slog.Error(err.Error())
@@ -112,6 +118,11 @@ func publishHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	slog.Debug(fmt.Sprintf("Received publish request %+v", r))
+
+	if !validatePath(r.Content) {
+		http.Error(w, "Invalid file name", http.StatusBadRequest)
+		return
+	}
 
 	path := filepath.Join("/homeassistant/tidbyt", r.Content+".star")
 	background := r.PublishType == "background"
@@ -134,6 +145,11 @@ func textHandler(w http.ResponseWriter, req *http.Request) {
 
 	if r.TextType == "" {
 		http.Error(w, "missing \"texttype\"", http.StatusBadRequest)
+		return
+	}
+
+	if !validatePath(r.TextType) {
+		http.Error(w, "Invalid file name", http.StatusBadRequest)
 		return
 	}
 
@@ -312,6 +328,10 @@ func checkHealth(url string) error {
 	}
 
 	return nil
+}
+
+func validatePath(path string) bool {
+	return !strings.Contains(path, "/") && !strings.Contains(path, "\\") && !strings.Contains(path, "..")
 }
 
 func main() {
