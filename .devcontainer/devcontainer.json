@@ -1,0 +1,34 @@
+{
+    "name": "devcontainer for add-on repositories",
+    "image": "ghcr.io/home-assistant/devcontainer:addons",
+    "appPort": ["7123:8123", "7357:4357"],
+    "postStartCommand": "bash devcontainer_bootstrap",
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libwebp-dev",
+    "runArgs": ["-e", "GIT_EDITOR=code --wait", "--privileged"],
+    "containerEnv": {
+      "WORKSPACE_DIRECTORY": "${containerWorkspaceFolder}"
+    },
+    "features": {
+      "ghcr.io/devcontainers/features/go:1": {
+          "version": "1.23.2"
+      }
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": ["timonwong.shellcheck", "esbenp.prettier-vscode", "golang.go", "github.vscode-github-actions"],
+        "settings": {
+          "terminal.integrated.profiles.linux": {
+            "zsh": {
+              "path": "/usr/bin/zsh"
+            }
+          },
+          "terminal.integrated.defaultProfile.linux": "zsh",
+          "editor.formatOnPaste": false,
+          "editor.formatOnSave": true,
+          "editor.formatOnType": true,
+          "files.trimTrailingWhitespace": true
+        }
+      }
+    },
+    "mounts": [ "type=volume,target=/var/lib/docker" ]
+  }

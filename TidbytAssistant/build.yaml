@@ -1,2 +1,2 @@
 args:
-    GO_VERSION: "1.23.1"
+  GO_VERSION: "1.23.2"
