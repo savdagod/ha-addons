@@ -1,0 +1,33 @@
+name: Go
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23.2"
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get -y install libwebp-dev
+
+      - name: Lint
+        run: go vet ./...
+        working-directory: ./TidbytAssistant
+
+      - name: Build
+        run: go build -v ./...
+        working-directory: ./TidbytAssistant
+
+      - name: Test
+        run: go test -v ./...
+        working-directory: ./TidbytAssistant
