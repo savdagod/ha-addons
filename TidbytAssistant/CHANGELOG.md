@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.10
+- Fixed timezone not found error when rendering apps with timezones
+   
 ## 1.0.9
 
 - Reduced size of the addon by running a distroless container with a static Go server.
