@@ -3,6 +3,7 @@
 ## 1.0.9
 
 - Reduced size of the addon by running a distroless container with a static Go server.
+- **NOTE: Be sure to update the integration to v1.0.7**
 
 ## 1.0.8
 
