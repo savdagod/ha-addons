@@ -17,7 +17,7 @@ ENV PATH=/usr/local/go/bin:${PATH}
 ENV GOROOT=/usr/local/go
 
 # Download dependencies
-RUN apk --no-cache add libc-dev gcc ca-certificates libwebp-dev libwebp-static
+RUN apk --no-cache add libc-dev gcc ca-certificates libwebp-dev libwebp-static tzdata
 
 # Build binary
 COPY *.go go.mod go.sum /src/
