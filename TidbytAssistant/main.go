@@ -75,6 +75,10 @@ type (
 		InstallationID string `json:"installationID,omitempty"`
 		Background     bool   `json:"background"`
 	}
+
+	options struct {
+		LogLevel string `json:"log_level"`
+	}
 )
 
 func pushHandler(w http.ResponseWriter, req *http.Request) {
@@ -335,8 +339,39 @@ func validatePath(path string) bool {
 	return !strings.Contains(path, "/") && !strings.Contains(path, "\\") && !strings.Contains(path, "..")
 }
 
+func parseOptions() {
+	optionsJSON, err := os.ReadFile("/data/options.json")
+	if err != nil {
+		if !os.IsNotExist(err) {
+			slog.Error(fmt.Sprintf("error reading /data/options: %v", err))
+		}
+		return
+	}
+
+	opt := options{}
+	if err := json.Unmarshal(optionsJSON, &opt); err != nil {
+		slog.Error(fmt.Sprintf("error parsing /data/options: %v", err))
+		return
+	}
+
+	switch opt.LogLevel {
+	case "debug":
+		slog.SetLogLoggerLevel(slog.LevelDebug)
+	case "info":
+		slog.SetLogLoggerLevel(slog.LevelInfo)
+	case "warning":
+		slog.SetLogLoggerLevel(slog.LevelWarn)
+	case "error":
+		slog.SetLogLoggerLevel(slog.LevelError)
+	default:
+		slog.Error(fmt.Sprintf("invalid log level: %s", opt.LogLevel))
+	}
+}
+
 func main() {
 	flag.Parse()
+
+	parseOptions()
 
 	if *healthURL != "" {
 		if err := checkHealth(*healthURL); err != nil {
