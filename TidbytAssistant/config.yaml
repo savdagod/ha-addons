@@ -1,6 +1,6 @@
 name: "TidbytAssistant"
-description: "Add-on with Pixlet application. Allows you to push custom apps to your Tidbyt. Install with integration v1.0.5"
-version: "1.0.9"
+description: "Add-on with Pixlet application. Allows you to push custom apps to your Tidbyt. Install with integration v1.0.7"
+version: "1.0.11"
 slug: "tidbytassistant"
 url: "https://github.com/savdagod/ha-addons/tree/main/TidbytAssistant"
 init: False
@@ -13,3 +13,5 @@ ports_description:
   9000/tcp: Web Server
 map:
   - type: homeassistant_config
+schema:
+  log_level: list(debug|info|warning|error)?

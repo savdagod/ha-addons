@@ -1,8 +1,17 @@
 # Changelog
 
+## 1.0.11
+
+- Added option to set the log level.
+
+## 1.0.10
+
+- Fixed timezone not found error when rendering apps with timezones.
+
 ## 1.0.9
 
 - Reduced size of the addon by running a distroless container with a static Go server.
+- **NOTE: Be sure to update the integration to v1.0.7**
 
 ## 1.0.8
 
