@@ -24,6 +24,7 @@ import (
 var (
 	cache     = runtime.NewInMemoryCache()
 	healthURL = flag.String("health", "", "perform health check for the given URL and exit")
+	appCache  = map[string]*runtime.Applet{}
 )
 
 const (
@@ -92,9 +93,11 @@ func pushHandler(w http.ResponseWriter, req *http.Request) {
 	slog.Debug(fmt.Sprintf("Received push request %+v", r))
 
 	var rootDir string
+	cache := false
 	switch r.ContentType {
 	case "builtin":
 		rootDir = "/display"
+		cache = true
 	case "custom":
 		rootDir = "/homeassistant/tidbyt"
 	default:
@@ -107,7 +110,7 @@ func pushHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	path := filepath.Join(rootDir, r.Content+".star")
-	if err := renderAndPush(path, r.Arguments, r.DeviceID, "", r.Token, false); err != nil {
+	if err := renderAndPush(path, r.Arguments, cache, r.DeviceID, "", r.Token, false); err != nil {
 		slog.Error(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -132,7 +135,7 @@ func publishHandler(w http.ResponseWriter, req *http.Request) {
 	path := filepath.Join("/homeassistant/tidbyt", r.Content+".star")
 	background := r.PublishType == "background"
 
-	if err := renderAndPush(path, r.Arguments, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
+	if err := renderAndPush(path, r.Arguments, false, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
 		slog.Error(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -170,7 +173,7 @@ func textHandler(w http.ResponseWriter, req *http.Request) {
 		config["titlefont"] = r.TitleFont
 	}
 
-	if err := renderAndPush(path, config, r.DeviceID, "", r.Token, false); err != nil {
+	if err := renderAndPush(path, config, true, r.DeviceID, "", r.Token, false); err != nil {
 		slog.Error(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -203,8 +206,8 @@ func healthHandler(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func renderAndPush(path string, arguments map[string]string, deviceID, installationID, token string, background bool) error {
-	image, err := renderApp(path, arguments)
+func renderAndPush(path string, arguments map[string]string, cache bool, deviceID, installationID, token string, background bool) error {
+	image, err := renderApp(path, arguments, cache)
 	if err != nil {
 		return fmt.Errorf("failed to render app: %v", err)
 	}
@@ -259,18 +262,36 @@ func tidbytAPI(u, method string, payload []byte, apiToken string) error {
 	return nil
 }
 
-func renderApp(path string, config map[string]string) ([]byte, error) {
-	// check if path exists
-	_, err := os.Stat(path)
-	if err != nil {
-		return nil, fmt.Errorf("failed to stat %s: %w", path, err)
-	}
+func renderApp(path string, config map[string]string, cache bool) ([]byte, error) {
+	applet := appCache[path]
 
-	// Remove the print function from the starlark thread if the silent flag is
-	// passed.
-	var opts []runtime.AppletOption
-	if silenceOutput {
-		opts = append(opts, runtime.WithPrintDisabled())
+	if applet == nil {
+		// check if path exists
+		_, err := os.Stat(path)
+		if err != nil {
+			return nil, fmt.Errorf("failed to stat %s: %w", path, err)
+		}
+
+		// Remove the print function from the starlark thread if the silent flag is
+		// passed.
+		var opts []runtime.AppletOption
+		if silenceOutput {
+			opts = append(opts, runtime.WithPrintDisabled())
+		}
+
+		srcBytes, err := os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read %s: %w", path, err)
+		}
+
+		applet, err = runtime.NewApplet(filepath.Base(path), srcBytes, opts...)
+		if err != nil {
+			return nil, fmt.Errorf("failed to load applet: %w", err)
+		}
+
+		if cache {
+			appCache[path] = applet
+		}
 	}
 
 	ctx := context.Background()
@@ -280,16 +301,6 @@ func renderApp(path string, config map[string]string) ([]byte, error) {
 			timeout,
 			fmt.Errorf("timeout after %v", timeout),
 		)
-	}
-
-	srcBytes, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read %s: %w", path, err)
-	}
-
-	applet, err := runtime.NewApplet(filepath.Base(path), srcBytes, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to load applet: %w", err)
 	}
 
 	roots, err := applet.RunWithConfig(ctx, config)
