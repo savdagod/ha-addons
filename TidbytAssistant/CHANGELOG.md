@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.12
+- Added config to main in built-in files to configure language from Push service.
+
 ## 1.0.11
 
 - Added option to set the log level.
