@@ -22,7 +22,7 @@ LOCALIZED_STRINGS = {
     },
 }
 
-def main():
+def main(config):
     lang = config.get("lang", "en")
 
     return render.Root(
