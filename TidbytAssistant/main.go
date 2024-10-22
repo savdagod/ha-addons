@@ -65,12 +65,6 @@ type (
 		TitleFont  string `json:"titlefont"`
 	}
 
-	deleteRequest struct {
-		InstallationID string `json:"contentid"`
-		DeviceID       string `json:"deviceid"`
-		Token          string `json:"token"`
-	}
-
 	tidbytPushRequest struct {
 		Image          string `json:"image"`
 		InstallationID string `json:"installationID,omitempty"`
@@ -176,29 +170,6 @@ func textHandler(w http.ResponseWriter, req *http.Request) {
 	if err := renderAndPush(path, config, true, r.DeviceID, "", r.Token, false); err != nil {
 		slog.Error(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
-func deleteHandler(w http.ResponseWriter, req *http.Request) {
-	var r deleteRequest
-
-	if err := json.NewDecoder(req.Body).Decode(&r); err != nil {
-		http.Error(w, fmt.Sprintf("failed to decode delete request: %v", err), http.StatusBadRequest)
-		return
-	}
-
-	slog.Debug(fmt.Sprintf("Received delete request %+v", r))
-
-	u := fmt.Sprintf(
-		"%s/v0/devices/%s/installations/%s",
-		tidbytBaseURL,
-		r.DeviceID,
-		r.InstallationID,
-	)
-	if err := tidbytAPI(u, "DELETE", nil, r.Token); err != nil {
-		slog.Error(err.Error())
-		http.Error(w, fmt.Sprintf("failed to delete: %v", err), http.StatusInternalServerError)
-		return
 	}
 }
 
@@ -398,7 +369,6 @@ func main() {
 	http.HandleFunc("POST /tidbyt-push", pushHandler)
 	http.HandleFunc("POST /tidbyt-publish", publishHandler)
 	http.HandleFunc("POST /tidbyt-text", textHandler)
-	http.HandleFunc("POST /tidbyt-delete", deleteHandler)
 	http.HandleFunc("GET /health", healthHandler)
 
 	slog.Info("Starting TidbytAssistant server")
