@@ -15,7 +15,13 @@
     },
     "customizations": {
       "vscode": {
-        "extensions": ["timonwong.shellcheck", "esbenp.prettier-vscode", "golang.go", "github.vscode-github-actions"],
+        "extensions": [
+            "timonwong.shellcheck",
+            "esbenp.prettier-vscode",
+            "golang.go",
+            "github.vscode-github-actions",
+            "Didericis.starlark"
+        ],
         "settings": {
           "terminal.integrated.profiles.linux": {
             "zsh": {

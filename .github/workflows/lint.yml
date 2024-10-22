@@ -1,18 +1,38 @@
-name: hadolint
+name: Lint
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   pull_request:
+    branches: ["main"]
 
 jobs:
-  hadolint:
+  lint:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.1
+      - uses: actions/checkout@v4
+
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: TidbytAssistant/Dockerfile
           failure-threshold: error
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get -y install npm libwebp-dev
+
+      - uses: actions/checkout@v4
+        with:
+          repository: "tidbyt/pixlet"
+          ref: "v0.34.0"
+          path: "pixlet"
+
+      - name: Build pixlet
+        run: npm install && npm run build && make build
+        working-directory: ./pixlet
+
+      - name: Run pixlet lint
+        run: ./pixlet/pixlet lint --recursive ./TidbytAssistant
+
+      - name: Run pixlet format
+        run: ./pixlet/pixlet format --recursive --dry-run ./TidbytAssistant
