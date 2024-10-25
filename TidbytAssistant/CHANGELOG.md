@@ -1,6 +1,10 @@
 # Changelog
 
 ## 1.0.12
+- Support pblishing built-in content. Added new content for publishing.
+-  **NOTE: Be sure to update the integration to v1.0.11**
+
+## 1.0.12
 - Added config to main in built-in files to configure language from Push service.
 
 ## 1.0.11
