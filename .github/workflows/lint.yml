@@ -32,7 +32,7 @@ jobs:
         working-directory: ./pixlet
 
       - name: Run pixlet lint fix
-        run: .pixlet/pixlet lint --fix --recursive ./TidbytAssistant
+        run: ./pixlet/pixlet lint --fix --recursive ./TidbytAssistant
 
       - name: Run pixlet lint
         run: ./pixlet/pixlet lint --recursive ./TidbytAssistant
