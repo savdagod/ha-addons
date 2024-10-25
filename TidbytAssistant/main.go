@@ -50,6 +50,7 @@ type (
 		Token          string            `json:"token"`
 		InstallationID string            `json:"contentid"`
 		PublishType    string            `json:"publishtype"`
+		ContentType    string            `json:"contenttype"`
 		Arguments      map[string]string `json:"starargs"`
 	}
 
@@ -120,16 +121,28 @@ func publishHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	slog.Debug(fmt.Sprintf("Received publish request %+v", r))
-
+	
+	var rootDir string
+	cache := false
+	switch r.ContentType {
+	case "builtin":
+		rootDir = "/display"
+		cache = true
+	case "custom":
+		rootDir = "/homeassistant/tidbyt"
+	default:
+		http.Error(w, fmt.Sprintf("unknown content type %q", r.ContentType), http.StatusBadRequest)
+	}
+	
 	if !validatePath(r.Content) {
 		http.Error(w, "Invalid file name", http.StatusBadRequest)
 		return
 	}
 
-	path := filepath.Join("/homeassistant/tidbyt", r.Content+".star")
+	path := filepath.Join(rootDir, r.Content+".star")
 	background := r.PublishType == "background"
 
-	if err := renderAndPush(path, r.Arguments, false, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
+	if err := renderAndPush(path, r.Arguments, cache, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
 		slog.Error(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
