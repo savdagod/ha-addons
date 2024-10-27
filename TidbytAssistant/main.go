@@ -73,7 +73,7 @@ type (
 	}
 )
 
-func publishHandler(w http.ResponseWriter, req *http.Request) {
+func pushHandler(w http.ResponseWriter, req *http.Request) {
 	var r publishRequest
 
 	if err := json.NewDecoder(req.Body).Decode(&r); err != nil {
@@ -350,8 +350,8 @@ func main() {
 	runtime.InitHTTP(cache)
 	runtime.InitCache(cache)
 
-	http.HandleFunc("POST /tidbyt-publish", publishHandler)
-	http.HandleFunc("POST /tidbyt-text", textHandler)
+	http.HandleFunc("POST /push", pushHandler)
+	http.HandleFunc("POST /text", textHandler)
 	http.HandleFunc("GET /health", healthHandler)
 
 	slog.Info("Starting TidbytAssistant server")
