@@ -7,11 +7,11 @@ iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAhBJREFUOE9lVMux
 
 LOCALIZED_STRINGS = {
     "bins": {
-        "de": "Mülltonne",
+        "de": "Müll",
         "en": "Bins are",
     },
     "out": {
-        "de": "draussen!",
+        "de": "rausbringen!",
         "en": "out!",
     },
 }
