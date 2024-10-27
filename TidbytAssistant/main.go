@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -25,6 +26,9 @@ var (
 	cache     = runtime.NewInMemoryCache()
 	healthURL = flag.String("health", "", "perform health check for the given URL and exit")
 	appCache  = map[string]*runtime.Applet{}
+
+	errUnknownContentType = errors.New("unknown content type")
+	errInvalidFileName    = errors.New("invalid file name")
 )
 
 const (
@@ -87,28 +91,8 @@ func pushHandler(w http.ResponseWriter, req *http.Request) {
 
 	slog.Debug(fmt.Sprintf("Received push request %+v", r))
 
-	var rootDir string
-	cache := false
-	switch r.ContentType {
-	case "builtin":
-		rootDir = "/display"
-		cache = true
-	case "custom":
-		rootDir = "/homeassistant/tidbyt"
-	default:
-		http.Error(w, fmt.Sprintf("unknown content type %q", r.ContentType), http.StatusBadRequest)
-	}
-
-	if !validatePath(r.Content) {
-		http.Error(w, "Invalid file name", http.StatusBadRequest)
-		return
-	}
-
-	path := filepath.Join(rootDir, r.Content+".star")
-	if err := renderAndPush(path, r.Arguments, cache, r.DeviceID, "", r.Token, false); err != nil {
-		slog.Error(err.Error())
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if err := pushApp(r.ContentType, r.Content, r.Arguments, r.DeviceID, "", r.Token, false); err != nil {
+		handleHTTPError(w, err)
 	}
 }
 
@@ -121,30 +105,10 @@ func publishHandler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	slog.Debug(fmt.Sprintf("Received publish request %+v", r))
-	
-	var rootDir string
-	cache := false
-	switch r.ContentType {
-	case "builtin":
-		rootDir = "/display"
-		cache = true
-	case "custom":
-		rootDir = "/homeassistant/tidbyt"
-	default:
-		http.Error(w, fmt.Sprintf("unknown content type %q", r.ContentType), http.StatusBadRequest)
-	}
-	
-	if !validatePath(r.Content) {
-		http.Error(w, "Invalid file name", http.StatusBadRequest)
-		return
-	}
 
-	path := filepath.Join(rootDir, r.Content+".star")
 	background := r.PublishType == "background"
-
-	if err := renderAndPush(path, r.Arguments, cache, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
-		slog.Error(err.Error())
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := pushApp(r.ContentType, r.Content, r.Arguments, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
+		handleHTTPError(w, err)
 	}
 }
 
@@ -163,12 +127,7 @@ func textHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if !validatePath(r.TextType) {
-		http.Error(w, "Invalid file name", http.StatusBadRequest)
-		return
-	}
-
-	path := filepath.Join("/display", fmt.Sprintf("text-%s.star", r.TextType))
+	contentName := fmt.Sprintf("text-%s", r.TextType)
 	config := map[string]string{
 		"content": r.Content,
 		"font":    r.Font,
@@ -180,9 +139,8 @@ func textHandler(w http.ResponseWriter, req *http.Request) {
 		config["titlefont"] = r.TitleFont
 	}
 
-	if err := renderAndPush(path, config, true, r.DeviceID, "", r.Token, false); err != nil {
-		slog.Error(err.Error())
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := pushApp("builtin", contentName, config, r.DeviceID, "", r.Token, false); err != nil {
+		handleHTTPError(w, err)
 	}
 }
 
@@ -190,7 +148,33 @@ func healthHandler(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func renderAndPush(path string, arguments map[string]string, cache bool, deviceID, installationID, token string, background bool) error {
+func handleHTTPError(w http.ResponseWriter, err error) {
+	status := http.StatusInternalServerError
+	if errors.Is(err, errInvalidFileName) || errors.Is(err, errUnknownContentType) {
+		status = http.StatusBadRequest
+	}
+	slog.Error(err.Error())
+	http.Error(w, err.Error(), status)
+}
+
+func pushApp(contentType, contentName string, arguments map[string]string, deviceID, installationID, token string, background bool) error {
+	var rootDir string
+	cache := false
+	switch contentType {
+	case "builtin":
+		rootDir = "/display"
+		cache = true
+	case "custom":
+		rootDir = "/homeassistant/tidbyt"
+	default:
+		return fmt.Errorf("%w: %q", errUnknownContentType, contentType)
+	}
+
+	if !validatePath(contentName) {
+		return errInvalidFileName
+	}
+
+	path := filepath.Join(rootDir, contentName)
 	image, err := renderApp(path, arguments, cache)
 	if err != nil {
 		return fmt.Errorf("failed to render app: %v", err)
@@ -240,7 +224,7 @@ func tidbytAPI(u, method string, payload []byte, apiToken string) error {
 		slog.Error(fmt.Sprintf("Tidbyt API returned status %s\n", resp.Status))
 		body, _ := io.ReadAll(resp.Body)
 		slog.Error(string(body))
-		return fmt.Errorf("Tidbyt API returned status: %s", resp.Status)
+		return fmt.Errorf("tidbyt API returned status: %s", resp.Status)
 	}
 
 	return nil
@@ -251,9 +235,13 @@ func renderApp(path string, config map[string]string, cache bool) ([]byte, error
 
 	if applet == nil {
 		// check if path exists
-		_, err := os.Stat(path)
+		info, err := os.Stat(path)
 		if err != nil {
-			return nil, fmt.Errorf("failed to stat %s: %w", path, err)
+			// legacy: try a single file with ".star" appended
+			info, err = os.Stat(path + ".star")
+			if err != nil {
+				return nil, fmt.Errorf("failed to stat %s: %w", path, err)
+			}
 		}
 
 		// Remove the print function from the starlark thread if the silent flag is
@@ -263,12 +251,18 @@ func renderApp(path string, config map[string]string, cache bool) ([]byte, error
 			opts = append(opts, runtime.WithPrintDisabled())
 		}
 
-		srcBytes, err := os.ReadFile(path)
-		if err != nil {
-			return nil, fmt.Errorf("failed to read %s: %w", path, err)
-		}
+		if info.IsDir() {
+			fs := os.DirFS(path)
+			applet, err = runtime.NewAppletFromFS(filepath.Base(path), fs, opts...)
+		} else {
+			var srcBytes []byte
+			srcBytes, err = os.ReadFile(path)
+			if err != nil {
+				return nil, fmt.Errorf("failed to read %s: %w", path, err)
+			}
 
-		applet, err = runtime.NewApplet(filepath.Base(path), srcBytes, opts...)
+			applet, err = runtime.NewApplet(filepath.Base(path), srcBytes, opts...)
+		}
 		if err != nil {
 			return nil, fmt.Errorf("failed to load applet: %w", err)
 		}
