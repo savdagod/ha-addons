@@ -26,7 +26,7 @@ LOCALIZED_STRINGS = {
         "en": "Open",
     },
     "closed": {
-        "de": "Geschlossen",
+        "de": "Zu",
         "en": "Closed",
     },
     "closing": {
