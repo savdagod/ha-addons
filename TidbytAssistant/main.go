@@ -40,14 +40,6 @@ const (
 )
 
 type (
-	pushRequest struct {
-		Content     string            `json:"content"`
-		DeviceID    string            `json:"deviceid"`
-		Token       string            `json:"token"`
-		ContentType string            `json:"contenttype"`
-		Arguments   map[string]string `json:"starargs"`
-	}
-
 	publishRequest struct {
 		Content        string            `json:"content"`
 		DeviceID       string            `json:"deviceid"`
@@ -80,21 +72,6 @@ type (
 		LogLevel string `json:"log_level"`
 	}
 )
-
-func pushHandler(w http.ResponseWriter, req *http.Request) {
-	var r pushRequest
-
-	if err := json.NewDecoder(req.Body).Decode(&r); err != nil {
-		http.Error(w, fmt.Sprintf("failed to decode push request: %v", err), http.StatusBadRequest)
-		return
-	}
-
-	slog.Debug(fmt.Sprintf("Received push request %+v", r))
-
-	if err := pushApp(r.ContentType, r.Content, r.Arguments, r.DeviceID, "", r.Token, false); err != nil {
-		handleHTTPError(w, err)
-	}
-}
 
 func publishHandler(w http.ResponseWriter, req *http.Request) {
 	var r publishRequest
@@ -373,7 +350,6 @@ func main() {
 	runtime.InitHTTP(cache)
 	runtime.InitCache(cache)
 
-	http.HandleFunc("POST /tidbyt-push", pushHandler)
 	http.HandleFunc("POST /tidbyt-publish", publishHandler)
 	http.HandleFunc("POST /tidbyt-text", textHandler)
 	http.HandleFunc("GET /health", healthHandler)
