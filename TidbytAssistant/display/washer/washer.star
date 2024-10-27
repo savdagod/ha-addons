@@ -7,7 +7,7 @@ iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAhJJREFUOE9VVQFu
 
 LOCALIZED_STRINGS = {
     "done": {
-        "de": "Waschmachine ist fertig!",
+        "de": "Waschmaschine ist fertig!",
         "en": "Wash cycle has completed!",
     },
 }
