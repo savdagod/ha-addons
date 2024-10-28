@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.0.14
+
 - Consolidate Push and Publish services into 1 to avoid redundancy. This is a breaking change so all automations using the Publish service needs to migrate to using the Push service. You should be able to just rename Publish to Push and all the config values should transfer over.
 - Added apps.json list, used by the integration to dynamically update services.yaml. This avoids needing to update the integration when a built-in app is added.
 - **NOTE: Be sure to update the integration to v1.0.13**

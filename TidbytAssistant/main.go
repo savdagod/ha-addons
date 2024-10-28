@@ -82,21 +82,21 @@ func healthHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func appsHandler(w http.ResponseWriter, req *http.Request) {
-    file, err := os.Open("/display/apps.json")
-    if err != nil {
-        http.Error(w, fmt.Sprintf("Could not open JSON file, %v", err), http.StatusBadRequest)
-        return
-    }
-    defer file.Close()
+	file, err := os.Open("/display/apps.json")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Could not open JSON file, %v", err), http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
 
-    var items []map[string]string
-    if err := json.NewDecoder(file).Decode(&items); err != nil {
-        http.Error(w, fmt.Sprintf("Could not decode JSON, %v", err), http.StatusBadRequest)
-        return
-    }
+	var items []map[string]string
+	if err := json.NewDecoder(file).Decode(&items); err != nil {
+		http.Error(w, fmt.Sprintf("Could not decode JSON, %v", err), http.StatusBadRequest)
+		return
+	}
 
-    w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(items)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(items)
 }
 
 func handleHTTPError(w http.ResponseWriter, err error) {
@@ -189,7 +189,8 @@ func renderApp(path string, config map[string]string, cache bool) ([]byte, error
 		info, err := os.Stat(path)
 		if err != nil {
 			// legacy: try a single file with ".star" appended
-			info, err = os.Stat(path + ".star")
+			path = path + ".star"
+			info, err = os.Stat(path)
 			if err != nil {
 				return nil, fmt.Errorf("failed to stat %s: %w", path, err)
 			}
