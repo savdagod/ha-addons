@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.15 
+- Fix filename used in legacy code path for single-file apps.
+
 ## 1.0.14
 
 - Consolidate Push and Publish services into 1 to avoid redundancy. This is a breaking change so all automations using the Publish service needs to migrate to using the Push service. You should be able to just rename Publish to Push and all the config values should transfer over.
