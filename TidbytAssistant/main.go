@@ -41,14 +41,6 @@ const (
 
 type (
 	pushRequest struct {
-		Content     string            `json:"content"`
-		DeviceID    string            `json:"deviceid"`
-		Token       string            `json:"token"`
-		ContentType string            `json:"contenttype"`
-		Arguments   map[string]string `json:"starargs"`
-	}
-
-	publishRequest struct {
 		Content        string            `json:"content"`
 		DeviceID       string            `json:"deviceid"`
 		Token          string            `json:"token"`
@@ -56,18 +48,6 @@ type (
 		PublishType    string            `json:"publishtype"`
 		ContentType    string            `json:"contenttype"`
 		Arguments      map[string]string `json:"starargs"`
-	}
-
-	textRequest struct {
-		Content    string `json:"content"`
-		DeviceID   string `json:"deviceid"`
-		Token      string `json:"token"`
-		TextType   string `json:"texttype"`
-		Font       string `json:"font"`
-		Color      string `json:"color"`
-		Title      string `json:"title"`
-		TitleColor string `json:"titlecolor"`
-		TitleFont  string `json:"titlefont"`
 	}
 
 	tidbytPushRequest struct {
@@ -91,55 +71,8 @@ func pushHandler(w http.ResponseWriter, req *http.Request) {
 
 	slog.Debug(fmt.Sprintf("Received push request %+v", r))
 
-	if err := pushApp(r.ContentType, r.Content, r.Arguments, r.DeviceID, "", r.Token, false); err != nil {
-		handleHTTPError(w, err)
-	}
-}
-
-func publishHandler(w http.ResponseWriter, req *http.Request) {
-	var r publishRequest
-
-	if err := json.NewDecoder(req.Body).Decode(&r); err != nil {
-		http.Error(w, fmt.Sprintf("failed to decode publish request: %v", err), http.StatusBadRequest)
-		return
-	}
-
-	slog.Debug(fmt.Sprintf("Received publish request %+v", r))
-
 	background := r.PublishType == "background"
 	if err := pushApp(r.ContentType, r.Content, r.Arguments, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
-		handleHTTPError(w, err)
-	}
-}
-
-func textHandler(w http.ResponseWriter, req *http.Request) {
-	var r textRequest
-
-	if err := json.NewDecoder(req.Body).Decode(&r); err != nil {
-		http.Error(w, fmt.Sprintf("failed to decode text request: %v", err), http.StatusBadRequest)
-		return
-	}
-
-	slog.Debug(fmt.Sprintf("Received text request %+v", r))
-
-	if r.TextType == "" {
-		http.Error(w, "missing \"texttype\"", http.StatusBadRequest)
-		return
-	}
-
-	contentName := fmt.Sprintf("text-%s", r.TextType)
-	config := map[string]string{
-		"content": r.Content,
-		"font":    r.Font,
-		"color":   r.Color,
-	}
-	if r.TextType == "title" {
-		config["title"] = r.Title
-		config["titlecolor"] = r.TitleColor
-		config["titlefont"] = r.TitleFont
-	}
-
-	if err := pushApp("builtin", contentName, config, r.DeviceID, "", r.Token, false); err != nil {
 		handleHTTPError(w, err)
 	}
 }
@@ -373,9 +306,7 @@ func main() {
 	runtime.InitHTTP(cache)
 	runtime.InitCache(cache)
 
-	http.HandleFunc("POST /tidbyt-push", pushHandler)
-	http.HandleFunc("POST /tidbyt-publish", publishHandler)
-	http.HandleFunc("POST /tidbyt-text", textHandler)
+	http.HandleFunc("POST /push", pushHandler)
 	http.HandleFunc("GET /health", healthHandler)
 
 	slog.Info("Starting TidbytAssistant server")
