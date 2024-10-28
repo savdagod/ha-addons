@@ -8,12 +8,9 @@ https://github.com/savdagod/ha-addons
 
 ## Add-ons provided by this repository
 
-<p align="center">
+<p>
   <img src="https://raw.githubusercontent.com/savdagod/ha-addons/main/TidbytAssistant/logo.png">
 </p>
-A Docker container that receives API requests to display information on your Tidbyt.
-After installing this add-on, install the TidbytAssistant integration found here:
 
-```txt
-https://github.com/savdagod/TidbytAssistant/
-```
+A Docker container that receives API requests to display information on your Tidbyt.
+After installing this add-on, install the [TidbytAssistant integration](https://github.com/savdagod/TidbytAssistant).
