@@ -1,0 +1,58 @@
+[
+    {
+        "label": "Coffee",
+        "value": "coffee"
+    },
+    {
+        "label": "Dishwasher",
+        "value": "dishwasher"
+    },
+    {
+        "label": "Doorbell",
+        "value": "doorbell"
+    },    
+    {
+        "label": "Dryer",
+        "value": "dryer"
+    },    
+    {
+        "label": "Filters",
+        "value": "filters"
+    },    
+    {
+        "label": "Fridge",
+        "value": "fridge"
+    },    
+    {
+        "label": "Garage Closed",
+        "value": "garageclosed"
+    },    
+    {
+        "label": "Garage Closing",
+        "value": "garagclosing"
+    },    
+    {
+        "label": "Garage Open",
+        "value": "garageopen"
+    },    
+    {
+        "label": "Trash",
+        "value": "trash"
+    },    
+    {
+        "label": "Trash Bins Out",
+        "value": "trashbinsout"
+    },    
+    {
+        "label": "Trash and Recycling",
+        "value": "trashrecycle"
+    },    
+    {
+        "label": "Trash and Recycling Bins Out",
+        "value": "trashrecbinsout"
+    },    
+    {
+        "label": "Washer",
+        "value": "washer"
+    }
+]

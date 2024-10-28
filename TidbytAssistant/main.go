@@ -81,6 +81,24 @@ func healthHandler(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+func appsHandler(w http.ResponseWriter, req *http.Request) {
+    file, err := os.Open("/display/apps.json")
+    if err != nil {
+        http.Error(w, fmt.Sprintf("Could not open JSON file, %v", err), http.StatusBadRequest)
+        return
+    }
+    defer file.Close()
+
+    var items []map[string]string
+    if err := json.NewDecoder(file).Decode(&items); err != nil {
+        http.Error(w, fmt.Sprintf("Could not decode JSON, %v", err), http.StatusBadRequest)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(items)
+}
+
 func handleHTTPError(w http.ResponseWriter, err error) {
 	status := http.StatusInternalServerError
 	if errors.Is(err, errInvalidFileName) || errors.Is(err, errUnknownContentType) {
@@ -307,6 +325,7 @@ func main() {
 	runtime.InitCache(cache)
 
 	http.HandleFunc("POST /push", pushHandler)
+	http.HandleFunc("GET /apps", appsHandler)
 	http.HandleFunc("GET /health", healthHandler)
 
 	slog.Info("Starting TidbytAssistant server")
