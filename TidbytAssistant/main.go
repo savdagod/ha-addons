@@ -277,7 +277,7 @@ func checkHealth(url string) error {
 }
 
 func validatePath(path string) bool {
-	return !strings.Contains(path, "/") && !strings.Contains(path, "\\") && !strings.Contains(path, "..")
+	return !strings.Contains(path, "..")
 }
 
 func parseOptions() {
