@@ -3,7 +3,7 @@ ARG BUILD_FROM=homeassistant/amd64-base:latest
 FROM ${BUILD_FROM} AS builder
 
 # Args from build.yaml
-ARG GO_VERSION=1.23.2
+ARG GO_VERSION=1.23.3
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
