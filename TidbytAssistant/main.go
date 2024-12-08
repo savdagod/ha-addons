@@ -304,6 +304,8 @@ func parseOptions() {
 		slog.SetLogLoggerLevel(slog.LevelWarn)
 	case "error":
 		slog.SetLogLoggerLevel(slog.LevelError)
+	case "":
+		// do nothing
 	default:
 		slog.Error(fmt.Sprintf("invalid log level: %s", opt.LogLevel))
 	}
