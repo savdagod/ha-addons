@@ -13,5 +13,8 @@ ports_description:
   9000/tcp: Web Server
 map:
   - type: homeassistant_config
+options:
+  base_url: "https://api.tidbyt.com"
 schema:
   log_level: list(debug|info|warning|error)?
+  base_url: url
