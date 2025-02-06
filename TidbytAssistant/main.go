@@ -23,16 +23,16 @@ import (
 )
 
 var (
-	cache     = runtime.NewInMemoryCache()
-	healthURL = flag.String("health", "", "perform health check for the given URL and exit")
-	appCache  = map[string]*runtime.Applet{}
+	tidbytBaseURL = "https://api.tidbyt.com"
+	cache         = runtime.NewInMemoryCache()
+	healthURL     = flag.String("health", "", "perform health check for the given URL and exit")
+	appCache      = map[string]*runtime.Applet{}
 
 	errUnknownContentType = errors.New("unknown content type")
 	errInvalidFileName    = errors.New("invalid file name")
 )
 
 const (
-	tidbytBaseURL = "https://api.tidbyt.com"
 	silenceOutput = false
 	renderGif     = false
 	timeout       = 30 * time.Second
@@ -58,6 +58,7 @@ type (
 
 	options struct {
 		LogLevel string `json:"log_level"`
+		BaseURL  string `json:"base_url"`
 	}
 )
 
@@ -294,6 +295,8 @@ func parseOptions() {
 		slog.Error(fmt.Sprintf("error parsing /data/options: %v", err))
 		return
 	}
+
+	tidbytBaseURL = opt.BaseURL
 
 	switch opt.LogLevel {
 	case "debug":
