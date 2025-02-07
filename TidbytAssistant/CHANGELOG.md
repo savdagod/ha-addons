@@ -1,6 +1,11 @@
 # Changelog
 
-## 1.0.15 
+## 1.0.16
+
+- The base URL used to push rendered images to a server is now configurable. This can be used to switch from Tidbyt's server to API-compatible alternatives like https://github.com/tavdog/tronbyt-server.
+
+## 1.0.15
+
 - Fix filename used in legacy code path for single-file apps.
 
 ## 1.0.14
