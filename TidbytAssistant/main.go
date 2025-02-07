@@ -48,6 +48,7 @@ type (
 		PublishType    string            `json:"publishtype"`
 		ContentType    string            `json:"contenttype"`
 		Arguments      map[string]string `json:"starargs"`
+		BaseURL        string            `json:"base_url"`
 	}
 
 	tidbytPushRequest struct {
@@ -73,7 +74,11 @@ func pushHandler(w http.ResponseWriter, req *http.Request) {
 	slog.Debug(fmt.Sprintf("Received push request %+v", r))
 
 	background := r.PublishType == "background"
-	if err := pushApp(r.ContentType, r.Content, r.Arguments, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
+	baseURL := r.BaseURL
+	if baseURL == "" {
+		baseURL = tidbytBaseURL
+	}
+	if err := pushApp(baseURL, r.ContentType, r.Content, r.Arguments, r.DeviceID, r.InstallationID, r.Token, background); err != nil {
 		handleHTTPError(w, err)
 	}
 }
@@ -109,7 +114,7 @@ func handleHTTPError(w http.ResponseWriter, err error) {
 	http.Error(w, err.Error(), status)
 }
 
-func pushApp(contentType, contentName string, arguments map[string]string, deviceID, installationID, token string, background bool) error {
+func pushApp(baseURL, contentType, contentName string, arguments map[string]string, deviceID, installationID, token string, background bool) error {
 	var rootDir string
 	cache := false
 	switch contentType {
@@ -132,7 +137,7 @@ func pushApp(contentType, contentName string, arguments map[string]string, devic
 		return fmt.Errorf("failed to render app: %v", err)
 	}
 
-	if err := tidbytPush(image, deviceID, installationID, token, background); err != nil {
+	if err := tidbytPush(baseURL, image, deviceID, installationID, token, background); err != nil {
 		return fmt.Errorf("failed to push image: %v", err)
 	}
 
@@ -141,7 +146,7 @@ func pushApp(contentType, contentName string, arguments map[string]string, devic
 	return nil
 }
 
-func tidbytPush(imageData []byte, deviceID, installationID, apiToken string, background bool) error {
+func tidbytPush(baseURL string, imageData []byte, deviceID, installationID, apiToken string, background bool) error {
 	payload, err := json.Marshal(
 		tidbytPushRequest{
 			Image:          base64.StdEncoding.EncodeToString(imageData),
@@ -152,7 +157,7 @@ func tidbytPush(imageData []byte, deviceID, installationID, apiToken string, bac
 	if err != nil {
 		return fmt.Errorf("failed to marshal json: %w", err)
 	}
-	u := fmt.Sprintf("%s/v0/devices/%s/push", tidbytBaseURL, url.PathEscape(deviceID))
+	u := fmt.Sprintf("%s/v0/devices/%s/push", baseURL, url.PathEscape(deviceID))
 	if err := tidbytAPI(u, "POST", payload, apiToken); err != nil {
 		return fmt.Errorf("failed to push image: %w", err)
 	}
