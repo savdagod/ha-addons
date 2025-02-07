@@ -4,7 +4,7 @@ services:
     build:
       context: .
       args:
-        - BUILD_FROM=homeassistant/amd64-base:latest
+        - BUILD_FROM=ghcr.io/home-assistant/amd64-base:3.21
         - GO_VERSION=1.23.6
     ports:
       - 9000:9000
