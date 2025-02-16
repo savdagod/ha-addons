@@ -1,6 +1,6 @@
 module github.com/savdagod/ha-addons/TidbytAssistant
 
-go 1.23.6
+go 1.24.0
 
 require tidbyt.dev/pixlet v0.34.0
 
