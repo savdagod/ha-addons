@@ -232,11 +232,13 @@ func renderApp(path string, config map[string]string, cache bool) ([]byte, error
 
 	ctx := context.Background()
 	if timeout > 0 {
-		ctx, _ = context.WithTimeoutCause(
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeoutCause(
 			ctx,
 			timeout,
 			fmt.Errorf("timeout after %v", timeout),
 		)
+		defer cancel()
 	}
 
 	roots, err := applet.RunWithConfig(ctx, config)
