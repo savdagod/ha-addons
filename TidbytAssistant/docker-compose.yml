@@ -5,6 +5,6 @@ services:
       context: .
       args:
         - BUILD_FROM=ghcr.io/home-assistant/amd64-base:3.21
-        - GO_VERSION=1.23.6
+        - GO_VERSION=1.24.1
     ports:
       - 9000:9000

@@ -3,7 +3,7 @@ ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:3.21
 FROM ${BUILD_FROM} AS builder
 
 # Args from build.yaml
-ARG GO_VERSION=1.23.6
+ARG GO_VERSION=1.24.1
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
