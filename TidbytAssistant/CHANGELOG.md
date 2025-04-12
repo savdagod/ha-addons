@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.17
+- Change startup to system so add-on is ready before integration sets up.
+
 ## 1.0.16
 
 - The base URL used to push rendered images to a server is now configurable. This can be used to switch from Tidbyt's server to API-compatible alternatives like https://github.com/tavdog/tronbyt-server.
