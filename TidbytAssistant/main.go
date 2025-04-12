@@ -171,6 +171,7 @@ func tidbytAPI(u, method string, payload []byte, apiToken string) error {
 	}
 
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", apiToken))
+	req.Header.Add("Content-Type", "application/json")
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
