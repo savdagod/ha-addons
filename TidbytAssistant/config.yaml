@@ -4,6 +4,7 @@ version: "1.0.16"
 slug: "tidbytassistant"
 url: "https://github.com/savdagod/ha-addons/tree/main/TidbytAssistant"
 init: False
+startup: system
 arch:
   - aarch64
   - amd64
